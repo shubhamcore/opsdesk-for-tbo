@@ -8,16 +8,40 @@ on:
 jobs:
   backend:
     runs-on: ubuntu-latest
+    env:
+      OPSDESK_ENV: ci
+      OPSDESK_SECRET_KEY: ci-only-secret-not-for-production
+      OPSDESK_RATE_LIMIT_PER_MINUTE: "0"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - run: pip install -r requirements.txt
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
       - name: Test suite
         run: python -m pytest tests backend/tests -q
-      - name: Seeded journeys
+      - name: Seed the synthetic dataset
+        run: python -m database.seed_data.seed
+      - name: Start the API
+        run: |
+          uvicorn backend.main:app --host 127.0.0.1 --port 8000 --no-access-log &
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:8000/api/ready; then echo "API ready after ${i}s"; exit 0; fi
+            sleep 1
+          done
+          echo "API failed to become ready"; exit 1
+      - name: Seeded journeys A-E
         run: python -m simulation.run_all
+      - name: Upload journey report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: journey-results
+          path: benchmark_results/journey_results.json
+          if-no-files-found: warn
 
   frontend:
     runs-on: ubuntu-latest
