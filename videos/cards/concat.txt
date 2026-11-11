@@ -1,0 +1,15 @@
+file '/home/user/OpsDesk/videos/cards/scene_01.png'
+duration 15.0
+file '/home/user/OpsDesk/videos/cards/scene_02.png'
+duration 15.0
+file '/home/user/OpsDesk/videos/cards/scene_03.png'
+duration 15.0
+file '/home/user/OpsDesk/videos/cards/scene_04.png'
+duration 15.0
+file '/home/user/OpsDesk/videos/cards/scene_05.png'
+duration 15.0
+file '/home/user/OpsDesk/videos/cards/scene_06.png'
+duration 15.0
+file '/home/user/OpsDesk/videos/cards/scene_07.png'
+duration 15.0
+file '/home/user/OpsDesk/videos/cards/scene_07.png'

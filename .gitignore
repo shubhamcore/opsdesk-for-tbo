@@ -1,0 +1,46 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ---- Node / frontend ----
+node_modules/
+frontend/dist/
+.vite/
+npm-debug.log*
+yarn-error.log*
+
+# ---- Secrets (NEVER commit) ----
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+.netrc
+.git-credentials
+
+# ---- Runtime artifacts ----
+# Streaming-export files are generated at runtime; keep the folder, drop contents
+exports/*
+!exports/.gitkeep
+# SQLite WAL sidecars (the .db itself is committed: synthetic demo data)
+database/*.db-wal
+database/*.db-shm
+*.log
+backups/
+
+# ---- Video render scratch space (final MP4s are committed) ----
+videos/raw/
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

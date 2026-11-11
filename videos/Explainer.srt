@@ -1,0 +1,27 @@
+1
+00:00:00,000 --> 00:00:14,700
+The problem. A single booking generates many interactions: refunds, vouchers, amendments, rate mismatches. Ticket-centric tools treat each one in isolation — the agent loses the operational context. OpsDesk starts from the booking and links every ticket to it.
+
+2
+00:00:15,000 --> 00:00:29,700
+One booking, one case. Ticket creation extracts the TBO booking id from free text (TBOH-######), then links the case. Related tickets, supplier threads and the activity timeline live in one workspace. Nothing is re-keyed: the booking is the context, the ticket is one interaction.
+
+3
+00:00:30,000 --> 00:00:44,700
+Understanding the intent. TF-IDF + logistic regression, calibrated, trained on synthetic in-house templates. Template-disjoint holdout: 0.8958 accuracy, 0.8964 macro F1 (288 rows). A rule-based fallback keeps the pipeline working if the model file is missing.
+
+4
+00:00:45,000 --> 00:00:59,700
+Routing you can audit. Hard filters first: offline, capacity, shift, skill floor, regional eligibility. Then region 35, shift 25, skill×urgency 25, capacity 15 — every term stored. Tie-break on lowest active load, then agent id; each run is an immutable audit row.
+
+5
+00:01:00,000 --> 00:01:14,700
+SLA that respects travel. Priority SLA: CRITICAL 1h, HIGH 4h, MEDIUM 12h, LOW 24h. Travel deadlines shorten the clock; regional holidays lower the at-risk threshold to 50%. Missing or expired dates are handled explicitly, never zeroed.
+
+6
+00:01:15,000 --> 00:01:29,700
+Conversations stay independent. Supplier, finance and agency threads carry their own explicit recipients. Transfers move the queue and owner only — history and recipients are verified unchanged. The supplier never inherits the destination group's addresses.
+
+7
+00:01:30,000 --> 00:01:44,700
+From operations to product. Recurring supplier + intent patterns become product bug proposals with evidence. Escalations reassign real ownership and record why. 50,000 rows stream in ~1.3s with validation and measured memory — no fake progress bars.

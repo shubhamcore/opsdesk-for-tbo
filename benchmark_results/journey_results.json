@@ -1,0 +1,1454 @@
+{
+  "generated_at": "2026-11-11T15:08:01.576682+00:00",
+  "base_url": "http://127.0.0.1:8000",
+  "journeys": [
+    {
+      "journey": "A",
+      "title": "Booking context and automatic case linking",
+      "started_at": "2026-11-11T15:08:01.485218+00:00",
+      "finished_at": "2026-11-11T15:08:01.576567+00:00",
+      "steps": [
+        {
+          "name": "Agency requester signs in",
+          "expected": "Token issued for Wanderlust Travels",
+          "actual": "Maya Al Farsi (AGENCY_REQUESTER, Wanderlust Travels)",
+          "passed": true,
+          "evidence": {
+            "agency": {
+              "id": 1,
+              "code": "AG-WLT",
+              "name": "Wanderlust Travels",
+              "tier": "GOLD",
+              "region": "MEA",
+              "contact_email": "ops@wanderlust-travels.com"
+            }
+          },
+          "duration_ms": 46.49,
+          "error": null
+        },
+        {
+          "name": "Booking context is visible before the new request",
+          "expected": ">= 3 existing tickets",
+          "actual": "7 existing tickets on TBOH-778899",
+          "passed": true,
+          "evidence": {
+            "ticket_numbers": [
+              "TCK-101",
+              "TCK-104",
+              "TCK-109",
+              "TCK-624",
+              "TCK-514",
+              "TCK-612",
+              "TCK-600"
+            ]
+          },
+          "duration_ms": 6.53,
+          "error": null
+        },
+        {
+          "name": "Submit refund request with the TBOH field left EMPTY",
+          "expected": "Ticket created",
+          "actual": "Created TCK-625",
+          "passed": true,
+          "evidence": {
+            "ticket_number": "TCK-625"
+          },
+          "duration_ms": 22.9,
+          "error": null
+        },
+        {
+          "name": "Stage A extracts the booking id from the description",
+          "expected": "extraction_source=DESCRIPTION, TBOH-778899",
+          "actual": "['TBOH-778899'] via DESCRIPTION",
+          "passed": true,
+          "evidence": {
+            "tboh_ids": [
+              "TBOH-778899"
+            ],
+            "extraction_source": "DESCRIPTION",
+            "suppliers": [],
+            "hotels": [
+              "Atlantis The Palm"
+            ],
+            "amounts": [
+              {
+                "currency": "USD",
+                "value": 1450.0,
+                "raw": "USD 1,450"
+              }
+            ],
+            "dates": []
+          },
+          "duration_ms": 0.0,
+          "error": null
+        },
+        {
+          "name": "Intent classified as REFUND_DELAY with calibrated confidence",
+          "expected": "REFUND_DELAY from the ML pipeline",
+          "actual": "REFUND_DELAY @ 87% (ML)",
+          "passed": true,
+          "evidence": {
+            "intent": "REFUND_DELAY",
+            "confidence": 0.870119,
+            "reasoning": [
+              "Refund Delay-related language detected: \u201crefund\u201d, \u201ccredited\u201d, \u201cnot received\u201d, \u201cchase\u201d",
+              "Booking context identified: TBOH-778899 recovered from the description (TBOH field was left empty)",
+              "Previous related contacts found: 7 prior ticket(s) on the same booking",
+              "Travel features used by the model: LCD passed 72.0h ago; check-in in 120.0h"
+            ]
+          },
+          "duration_ms": 0.0,
+          "error": null
+        },
+        {
+          "name": "Previous tickets are linked into one case",
+          "expected": "TCK-101, TCK-104 and TCK-109 appear in the linked case",
+          "actual": "10 related tickets: ['TCK-101', 'TCK-104', 'TCK-109']",
+          "passed": true,
+          "evidence": {
+            "related": [
+              {
+                "ticket_id": 1,
+                "ticket_number": "TCK-101",
+                "title": "Refund not received for cancelled Atlantis stay",
+                "intent": "REFUND_DELAY",
+                "status": "IN_PROGRESS",
+                "priority": "HIGH",
+                "created_at": "2026-10-22T15:08:00+00:00",
+                "link_type": "SAME_BOOKING",
+                "confidence": 1.0,
+                "reason": "Same booking TBOH-778899 \u2014 identical operational context"
+              },
+              {
+                "ticket_id": 2,
+                "ticket_number": "TCK-104",
+                "title": "Follow up on USD 1,450 refund (TBOH-778899)",
+                "intent": "REFUND_DELAY",
+                "status": "PENDING_SUPPLIER",
+                "priority": "HIGH",
+                "created_at": "2026-10-30T15:08:00+00:00",
+                "link_type": "SAME_BOOKING",
+                "confidence": 1.0,
+                "reason": "Same booking TBOH-778899 \u2014 identical operational context"
+              },
+              {
+                "ticket_id": 3,
+                "ticket_number": "TCK-109",
+                "title": "Refund credit note still not issued",
+                "intent": "REFUND_DELAY",
+                "status": "OPEN",
+                "priority": "MEDIUM",
+                "created_at": "2026-11-04T15:08:00+00:00",
+                "link_type": "SAME_BOOKING",
+                "confidence": 1.0,
+                "reason": "Same booking TBOH-778899 \u2014 identical operational context"
+              },
+              {
+                "ticket_id": 24,
+                "ticket_number": "TCK-514",
+                "title": "Refund escalation for Atlantis The Palm",
+                "intent": "REFUND_DELAY",
+                "status": "OPEN",
+                "priority": "HIGH",
+                "created_at": "2026-11-10T19:08:00+00:00",
+                "link_type": "SAME_BOOKING",
+                "confidence": 1.0,
+                "reason": "Same booking TBOH-778899 \u2014 identical operational context"
+              },
+              {
+                "ticket_id": 25,
+                "ticket_number": "TCK-600",
+                "title": "Rate mismatch on Hotelbeds API for Atlantis The Palm",
+                "intent": "INVENTORY_RATE_SYNC_BUG",
+                "status": "OPEN",
+                "priority": "HIGH",
+                "created_at": "2026-11-11T13:56:00+00:00",
+                "link_type": "SAME_BOOKING",
+                "confidence": 1.0,
+                "reason": "Same booking TBOH-778899 \u2014 identical operational context"
+              },
+              {
+                "ticket_id": 37,
+                "ticket_number": "TCK-612",
+                "title": "Refund not received for cancelled Atlantis The Palm stay",
+                "intent": "REFUND_DELAY",
+                "status": "OPEN",
+                "priority": "HIGH",
+                "created_at": "2026-11-11T11:39:12+00:00",
+                "link_type": "SAME_BOOKING",
+                "confidence": 1.0,
+                "reason": "Same booking TBOH-778899 \u2014 identical operational context"
+              },
+              {
+                "ticket_id": 49,
+                "ticket_number": "TCK-624",
+                "title": "Special request for the Atlantis The Palm arrival",
+                "intent": "SPECIAL_REQUEST",
+                "status": "OPEN",
+                "priority": "LOW",
+                "created_at": "2026-11-10T03:56:00+00:00",
+                "link_type": "SAME_BOOKING",
+                "confidence": 1.0,
+                "reason": "Same booking TBOH-778899 \u2014 identical operational context"
+              },
+              {
+                "ticket_id": 21,
+                "ticket_number": "TCK-511",
+                "title": "Refund delay for cancelled Rotana stay",
+                "intent": "REFUND_DELAY",
+                "status": "OPEN",
+                "priority": "HIGH",
+                "created_at": "2026-11-09T17:08:00+00:00",
+                "link_type": "SAME_AGENCY_INTENT_WINDOW",
+                "confidence": 0.6,
+                "reason": "Same agency and intent (REFUND_DELAY) within 30 days"
+              }
+            ],
+            "case_brief": [
+              "11 linked tickets in this case for TBOH-778899 (Atlantis The Palm, Dubai) since 22 Oct 2026 \u2014 dominant intents: REFUND_DELAY\u00d79, SPECIAL_REQUEST\u00d71, INVENTORY_RATE_SYNC_BUG\u00d71",
+              "Booking value USD 1,450 with supplier Hotelbeds; status REFUND_PENDING; 0 thread message(s) and 0 supplier/finance side conversation(s).",
+              "Travel urgency: BREACHED (LCD_DEADLINE); effective SLA due 08 Nov 2026 17:08 UTC+04:00; overdue by 3d 2h; LCD 08 Nov 2026 19:08 UTC+04:00; check-in 16 Nov 2026 19:08 UTC+04:00."
+            ],
+            "booking": {
+              "id": 1,
+              "tboh_id": "TBOH-778899",
+              "hotel_name": "Atlantis The Palm",
+              "supplier_name": "Hotelbeds",
+              "supplier_email": "reservations@hotelbeds.com",
+              "destination_city": "Dubai",
+              "destination_country": "United Arab Emirates",
+              "region": "MEA",
+              "timezone": "Asia/Dubai",
+              "check_in": "2026-11-16T15:08:00+00:00",
+              "check_out": "2026-11-19T15:08:00+00:00",
+              "lcd": "2026-11-08T15:08:00+00:00",
+              "booking_status": "REFUND_PENDING",
+              "amount": 1450.0,
+              "currency": "USD",
+              "passenger_name": "Rashid Al Nuaimi",
+              "agency_id": 1,
+              "agency_name": "Wanderlust Travels",
+              "agency_tier": "GOLD",
+              "display_timezone": "Asia/Dubai",
+              "check_in_local": "16 Nov 2026 19:08 UTC+04:00",
+              "lcd_local": "08 Nov 2026 19:08 UTC+04:00",
+              "ticket_region": "MEA"
+            }
+          },
+          "duration_ms": 9.51,
+          "error": null
+        },
+        {
+          "name": "AI Case Brief summarises the linked history in three points",
+          "expected": "3 evidence-bound points",
+          "actual": "3 points",
+          "passed": true,
+          "evidence": {
+            "points": [
+              "11 linked tickets in this case for TBOH-778899 (Atlantis The Palm, Dubai) since 22 Oct 2026 \u2014 dominant intents: REFUND_DELAY\u00d79, SPECIAL_REQUEST\u00d71, INVENTORY_RATE_SYNC_BUG\u00d71",
+              "Booking value USD 1,450 with supplier Hotelbeds; status REFUND_PENDING; 0 thread message(s) and 0 supplier/finance side conversation(s).",
+              "Travel urgency: BREACHED (LCD_DEADLINE); effective SLA due 08 Nov 2026 17:08 UTC+04:00; overdue by 3d 2h; LCD 08 Nov 2026 19:08 UTC+04:00; check-in 16 Nov 2026 19:08 UTC+04:00."
+            ],
+            "sources": {
+              "ticket_ids": [
+                50,
+                1,
+                2,
+                3,
+                21,
+                49,
+                24,
+                33,
+                43,
+                37,
+                25
+              ],
+              "booking_id": "TBOH-778899",
+              "message_count": 0,
+              "side_conversation_count": 0
+            }
+          },
+          "duration_ms": 5.86,
+          "error": null
+        }
+      ],
+      "steps_total": 7,
+      "steps_passed": 7,
+      "passed": true,
+      "ticket_number": "TCK-625"
+    },
+    {
+      "journey": "B",
+      "title": "Intelligent routing and capacity",
+      "started_at": "2026-11-11T15:05:30.125425+00:00",
+      "finished_at": "2026-11-11T15:05:30.206908+00:00",
+      "steps": [
+        {
+          "name": "Operations agent signs in",
+          "expected": "Token issued for an ops agent",
+          "actual": "None",
+          "passed": true,
+          "evidence": {},
+          "duration_ms": 42.22,
+          "error": null
+        },
+        {
+          "name": "Create a high-priority APAC ticket",
+          "expected": "Ticket created (unassigned)",
+          "actual": "Created TCK-626",
+          "passed": true,
+          "evidence": {
+            "booking": {
+              "id": 2,
+              "tboh_id": "TBOH-554411",
+              "hotel_name": "Marina Bay Sands",
+              "supplier_name": "Agoda",
+              "supplier_email": "partners@agoda.com",
+              "destination_city": "Singapore",
+              "destination_country": "Singapore",
+              "region": "APAC",
+              "timezone": "Asia/Singapore",
+              "check_in": "2026-11-13T11:01:00+00:00",
+              "check_out": "2026-11-16T11:01:00+00:00",
+              "lcd": "2026-12-11T15:01:00+00:00",
+              "booking_status": "CONFIRMED",
+              "amount": 2380.0,
+              "currency": "SGD",
+              "passenger_name": "Wei Ling Tan",
+              "agency_id": 2,
+              "agency_name": "Apex Global Holidays",
+              "agency_tier": "SILVER",
+              "display_timezone": "Asia/Singapore",
+              "check_in_local": "13 Nov 2026 19:01 UTC+08:00",
+              "lcd_local": "11 Dec 2026 23:01 UTC+08:00",
+              "ticket_region": "APAC"
+            }
+          },
+          "duration_ms": 20.18,
+          "error": null
+        },
+        {
+          "name": "Dry-run the comparator before assignment",
+          "expected": "Ananya Sharma ranks first",
+          "actual": "Top candidate Ananya Sharma at 94.375/100 (4 eligible, 5 excluded)",
+          "passed": true,
+          "evidence": {
+            "candidates": [
+              {
+                "agent_id": 5,
+                "full_name": "Ananya Sharma",
+                "region": "APAC",
+                "skill_rank": 5,
+                "active_load": 1,
+                "max_capacity": 8,
+                "region_match": 1.0,
+                "shift_match": 1.0,
+                "skill_component": 21.25,
+                "capacity_component": 13.125,
+                "total_score": 94.375
+              },
+              {
+                "agent_id": 7,
+                "full_name": "Mei Chen",
+                "region": "APAC",
+                "skill_rank": 3,
+                "active_load": 5,
+                "max_capacity": 8,
+                "region_match": 1.0,
+                "shift_match": 1.0,
+                "skill_component": 12.75,
+                "capacity_component": 5.625,
+                "total_score": 78.375
+              },
+              {
+                "agent_id": 6,
+                "full_name": "Daniel Okafor",
+                "region": "AMER",
+                "skill_rank": 4,
+                "active_load": 2,
+                "max_capacity": 6,
+                "region_match": 0.0,
+                "shift_match": 1.0,
+                "skill_component": 17.0,
+                "capacity_component": 10.0,
+                "total_score": 52.0
+              },
+              {
+                "agent_id": 9,
+                "full_name": "Sofia Lindqvist",
+                "region": "EU",
+                "skill_rank": 4,
+                "active_load": 7,
+                "max_capacity": 8,
+                "region_match": 0.0,
+                "shift_match": 1.0,
+                "skill_component": 17.0,
+                "capacity_component": 1.875,
+                "total_score": 43.875
+              }
+            ],
+            "excluded": [
+              {
+                "agent_id": 8,
+                "full_name": "Rahul Mehta",
+                "region": "APAC",
+                "reasons": [
+                  "Agent at capacity (8/8)"
+                ]
+              },
+              {
+                "agent_id": 10,
+                "full_name": "Omar Haddad",
+                "region": "MEA",
+                "reasons": [
+                  "Agent at capacity (13/8)"
+                ]
+              },
+              {
+                "agent_id": 11,
+                "full_name": "Lucas Moreau",
+                "region": "EU",
+                "reasons": [
+                  "Outside eligible shift (22:00-06:00 Europe/Paris)"
+                ]
+              },
+              {
+                "agent_id": 12,
+                "full_name": "Ethan Blake",
+                "region": "EU",
+                "reasons": [
+                  "Outside eligible shift (00:00-00:00 Europe/London)"
+                ]
+              },
+              {
+                "agent_id": 13,
+                "full_name": "Priya Nair",
+                "region": "MEA",
+                "reasons": [
+                  "Agent is offline"
+                ]
+              }
+            ]
+          },
+          "duration_ms": 5.93,
+          "error": null
+        },
+        {
+          "name": "Run intelligent routing",
+          "expected": "Assigned to Ananya Sharma (APAC, skill 5/5)",
+          "actual": "Ananya Sharma \u2014 score 94.375/100, load 1/8",
+          "passed": true,
+          "evidence": {
+            "assigned_to": {
+              "id": 5,
+              "name": "Ananya Sharma",
+              "region": "APAC",
+              "skill_rank": 5,
+              "active_load": 1,
+              "max_capacity": 8
+            },
+            "decision_reason": "Ananya Sharma scored 94.38/100 (region 35 + shift 25 + skill 21.25 + capacity 13.12); next best Mei Chen at 78.38",
+            "candidates": [
+              {
+                "agent_id": 5,
+                "full_name": "Ananya Sharma",
+                "region": "APAC",
+                "skill_rank": 5,
+                "active_load": 1,
+                "max_capacity": 8,
+                "region_match": 1.0,
+                "shift_match": 1.0,
+                "skill_component": 21.25,
+                "capacity_component": 13.125,
+                "total_score": 94.375
+              },
+              {
+                "agent_id": 7,
+                "full_name": "Mei Chen",
+                "region": "APAC",
+                "skill_rank": 3,
+                "active_load": 5,
+                "max_capacity": 8,
+                "region_match": 1.0,
+                "shift_match": 1.0,
+                "skill_component": 12.75,
+                "capacity_component": 5.625,
+                "total_score": 78.375
+              },
+              {
+                "agent_id": 6,
+                "full_name": "Daniel Okafor",
+                "region": "AMER",
+                "skill_rank": 4,
+                "active_load": 2,
+                "max_capacity": 6,
+                "region_match": 0.0,
+                "shift_match": 1.0,
+                "skill_component": 17.0,
+                "capacity_component": 10.0,
+                "total_score": 52.0
+              },
+              {
+                "agent_id": 9,
+                "full_name": "Sofia Lindqvist",
+                "region": "EU",
+                "skill_rank": 4,
+                "active_load": 7,
+                "max_capacity": 8,
+                "region_match": 0.0,
+                "shift_match": 1.0,
+                "skill_component": 17.0,
+                "capacity_component": 1.875,
+                "total_score": 43.875
+              }
+            ],
+            "excluded": [
+              {
+                "agent_id": 8,
+                "full_name": "Rahul Mehta",
+                "region": "APAC",
+                "reasons": [
+                  "Agent at capacity (8/8)"
+                ]
+              },
+              {
+                "agent_id": 10,
+                "full_name": "Omar Haddad",
+                "region": "MEA",
+                "reasons": [
+                  "Agent at capacity (13/8)"
+                ]
+              },
+              {
+                "agent_id": 11,
+                "full_name": "Lucas Moreau",
+                "region": "EU",
+                "reasons": [
+                  "Outside eligible shift (22:00-06:00 Europe/Paris)"
+                ]
+              },
+              {
+                "agent_id": 12,
+                "full_name": "Ethan Blake",
+                "region": "EU",
+                "reasons": [
+                  "Outside eligible shift (00:00-00:00 Europe/London)"
+                ]
+              },
+              {
+                "agent_id": 13,
+                "full_name": "Priya Nair",
+                "region": "MEA",
+                "reasons": [
+                  "Agent is offline"
+                ]
+              }
+            ],
+            "urgency_weight": 0.85
+          },
+          "duration_ms": 7.9,
+          "error": null
+        },
+        {
+          "name": "Explain why FIFO was not used",
+          "expected": "Region, shift, skill and capacity all contribute",
+          "actual": "Winner scored 94.375/100 = region 35 + shift 25 + skill 21.2 + capacity 13.1",
+          "passed": true,
+          "evidence": {
+            "formula": "35*RegionMatch + 25*ShiftMatch + 25*(SkillRank/5)*UrgencyWeight + 15*(1-ActiveLoad/MaxCapacity)",
+            "fifo_note": "FIFO would hand this to whoever has waited longest. Routing instead scores every eligible agent on region, shift, skill and capacity, so the ticket lands with someone who is on shift, senior enough and has room \u2014 and every excluded agent is explained in the audit row.",
+            "runner_up": {
+              "agent_id": 7,
+              "full_name": "Mei Chen",
+              "region": "APAC",
+              "skill_rank": 3,
+              "active_load": 5,
+              "max_capacity": 8,
+              "region_match": 1.0,
+              "shift_match": 1.0,
+              "skill_component": 12.75,
+              "capacity_component": 5.625,
+              "total_score": 78.375
+            }
+          },
+          "duration_ms": 0.01,
+          "error": null
+        },
+        {
+          "name": "Routing decision is written to the immutable audit log",
+          "expected": "Audit row with every candidate score",
+          "actual": "1 audit row(s); latest records 4 candidates",
+          "passed": true,
+          "evidence": {
+            "audit": {
+              "id": 4,
+              "ticket_id": 51,
+              "candidates": [
+                {
+                  "agent_id": 5,
+                  "full_name": "Ananya Sharma",
+                  "region": "APAC",
+                  "skill_rank": 5,
+                  "active_load": 1,
+                  "max_capacity": 8,
+                  "region_match": 1.0,
+                  "shift_match": 1.0,
+                  "skill_component": 21.25,
+                  "capacity_component": 13.125,
+                  "total_score": 94.375
+                },
+                {
+                  "agent_id": 7,
+                  "full_name": "Mei Chen",
+                  "region": "APAC",
+                  "skill_rank": 3,
+                  "active_load": 5,
+                  "max_capacity": 8,
+                  "region_match": 1.0,
+                  "shift_match": 1.0,
+                  "skill_component": 12.75,
+                  "capacity_component": 5.625,
+                  "total_score": 78.375
+                },
+                {
+                  "agent_id": 6,
+                  "full_name": "Daniel Okafor",
+                  "region": "AMER",
+                  "skill_rank": 4,
+                  "active_load": 2,
+                  "max_capacity": 6,
+                  "region_match": 0.0,
+                  "shift_match": 1.0,
+                  "skill_component": 17.0,
+                  "capacity_component": 10.0,
+                  "total_score": 52.0
+                },
+                {
+                  "agent_id": 9,
+                  "full_name": "Sofia Lindqvist",
+                  "region": "EU",
+                  "skill_rank": 4,
+                  "active_load": 7,
+                  "max_capacity": 8,
+                  "region_match": 0.0,
+                  "shift_match": 1.0,
+                  "skill_component": 17.0,
+                  "capacity_component": 1.875,
+                  "total_score": 43.875
+                }
+              ],
+              "excluded": [
+                {
+                  "agent_id": 8,
+                  "full_name": "Rahul Mehta",
+                  "region": "APAC",
+                  "reasons": [
+                    "Agent at capacity (8/8)"
+                  ]
+                },
+                {
+                  "agent_id": 10,
+                  "full_name": "Omar Haddad",
+                  "region": "MEA",
+                  "reasons": [
+                    "Agent at capacity (13/8)"
+                  ]
+                },
+                {
+                  "agent_id": 11,
+                  "full_name": "Lucas Moreau",
+                  "region": "EU",
+                  "reasons": [
+                    "Outside eligible shift (22:00-06:00 Europe/Paris)"
+                  ]
+                },
+                {
+                  "agent_id": 12,
+                  "full_name": "Ethan Blake",
+                  "region": "EU",
+                  "reasons": [
+                    "Outside eligible shift (00:00-00:00 Europe/London)"
+                  ]
+                },
+                {
+                  "agent_id": 13,
+                  "full_name": "Priya Nair",
+                  "region": "MEA",
+                  "reasons": [
+                    "Agent is offline"
+                  ]
+                }
+              ],
+              "eligible_count": 4,
+              "selected_agent_id": 5,
+              "selected_agent": null,
+              "selected_score": 94.375,
+              "decision_reason": "Ananya Sharma scored 94.38/100 (region 35 + shift 25 + skill 21.25 + capacity 13.12); next best Mei Chen at 78.38",
+              "tie_break_applied": false,
+              "triggered_by": "MANUAL",
+              "created_at": "2026-11-11T15:05:30.197952+00:00"
+            }
+          },
+          "duration_ms": 5.2,
+          "error": null
+        }
+      ],
+      "steps_total": 6,
+      "steps_passed": 6,
+      "passed": true,
+      "ticket_number": "TCK-626"
+    },
+    {
+      "journey": "C",
+      "title": "Transfer-safe supplier communication",
+      "started_at": "2026-11-11T15:05:30.211799+00:00",
+      "finished_at": "2026-11-11T15:05:30.302144+00:00",
+      "steps": [
+        {
+          "name": "EU operations agent signs in",
+          "expected": "Token issued",
+          "actual": "None",
+          "passed": true,
+          "evidence": {},
+          "duration_ms": 44.31,
+          "error": null
+        },
+        {
+          "name": "Open the EuroWings supplier ticket",
+          "expected": "TCK-301 located",
+          "actual": "TCK-301 in queue EU-TRIAGE",
+          "passed": true,
+          "evidence": {
+            "ticket": "TCK-301"
+          },
+          "duration_ms": 10.37,
+          "error": null
+        },
+        {
+          "name": "Supplier side conversation exists with explicit recipients",
+          "expected": "groups@hilton-paris.com",
+          "actual": "Reusing conversation #1 with ['groups@hilton-paris.com']",
+          "passed": true,
+          "evidence": {
+            "explicit_recipients": [
+              "groups@hilton-paris.com"
+            ]
+          },
+          "duration_ms": 6.49,
+          "error": null
+        },
+        {
+          "name": "Send a supplier message",
+          "expected": "Delivered to the explicit recipient",
+          "actual": "1 message(s) to ['groups@hilton-paris.com']",
+          "passed": true,
+          "evidence": {
+            "recipients": [
+              "groups@hilton-paris.com"
+            ]
+          },
+          "duration_ms": 7.5,
+          "error": null
+        },
+        {
+          "name": "Transfer EU-TRIAGE \u2192 EU-SENIOR-OPS",
+          "expected": "Recipients verified unchanged",
+          "actual": "Ticket moved to EU-SENIOR-OPS. Original recipients unchanged (1 conversation(s), 1 recipient(s)).",
+          "passed": true,
+          "evidence": {
+            "transfer": {
+              "ticket_id": 6,
+              "ticket_number": "TCK-301",
+              "from_queue": "EU-TRIAGE",
+              "to_queue": "EU-SENIOR-OPS",
+              "preserved_side_conversations": 1,
+              "recipients_unchanged": true,
+              "message": "Ticket moved to EU-SENIOR-OPS. Original recipients unchanged (1 conversation(s), 1 recipient(s)).",
+              "transfer_id": 1,
+              "note": "Escalating to senior ops for group allocation"
+            }
+          },
+          "duration_ms": 7.81,
+          "error": null
+        },
+        {
+          "name": "Reopen the conversation after transfer",
+          "expected": "Recipients and history preserved",
+          "actual": "queue=EU-SENIOR-OPS, recipients=['groups@hilton-paris.com'], messages=4, transfers=1",
+          "passed": true,
+          "evidence": {
+            "queue": "EU-SENIOR-OPS",
+            "explicit_recipients": [
+              "groups@hilton-paris.com"
+            ],
+            "message_count": 4,
+            "transfer_events": [
+              {
+                "id": 56,
+                "event_type": "TRANSFERRED",
+                "actor_name": "Sofia Lindqvist",
+                "description": "Transferred EU-TRIAGE \u2192 EU-SENIOR-OPS. 1 side conversation(s) preserved with original recipients.",
+                "metadata": {
+                  "from_queue": "EU-TRIAGE",
+                  "to_queue": "EU-SENIOR-OPS",
+                  "preserved_conversations": 1,
+                  "preserved_recipients": [
+                    [
+                      "groups@hilton-paris.com"
+                    ]
+                  ],
+                  "recipients_unchanged": true,
+                  "note": "Escalating to senior ops for group allocation"
+                },
+                "created_at": "2026-11-11T15:05:30.284458+00:00"
+              }
+            ]
+          },
+          "duration_ms": 13.79,
+          "error": null
+        }
+      ],
+      "steps_total": 6,
+      "steps_passed": 6,
+      "passed": true
+    },
+    {
+      "journey": "D",
+      "title": "Travel-aware SLA and escalation",
+      "started_at": "2026-11-11T15:05:30.308982+00:00",
+      "finished_at": "2026-11-11T15:05:30.452124+00:00",
+      "steps": [
+        {
+          "name": "Operations agent signs in",
+          "expected": "Token issued",
+          "actual": "None",
+          "passed": true,
+          "evidence": {},
+          "duration_ms": 41.32,
+          "error": null
+        },
+        {
+          "name": "Open the queue and read live SLA state",
+          "expected": "Both AT_RISK and BREACHED present",
+          "actual": "HEALTHY 10, AT_RISK 6, BREACHED 28",
+          "passed": true,
+          "evidence": {
+            "sla_states": {
+              "HEALTHY": 10,
+              "AT_RISK": 6,
+              "BREACHED": 28,
+              "RESOLVED": 7
+            },
+            "compliance": {
+              "compliance_pct": 22.73,
+              "healthy": 10,
+              "active": 44,
+              "definition": "HEALTHY tickets / all non-resolved tickets"
+            }
+          },
+          "duration_ms": 19.13,
+          "error": null
+        },
+        {
+          "name": "TCK-401 countdown is governed by the LCD deadline",
+          "expected": "LCD_DEADLINE rule",
+          "actual": "AT_RISK governed by LCD_DEADLINE, 49 min remaining (holiday threshold applied)",
+          "passed": true,
+          "evidence": {
+            "sla": {
+              "state": "AT_RISK",
+              "effective_due_at": "2026-11-11T15:55:00+00:00",
+              "priority_due_at": "2026-11-11T16:01:00+00:00",
+              "lcd_deadline": "2026-11-11T15:55:00+00:00",
+              "checkin_deadline": "2026-11-13T13:01:00+00:00",
+              "governing_rule": "LCD_DEADLINE",
+              "at_risk_threshold": 0.5,
+              "elapsed_ratio": 0.7885,
+              "seconds_remaining": 2969,
+              "minutes_remaining": 49,
+              "holiday_adjustment_applied": true,
+              "expired_travel_deadline": false,
+              "missing_dates": [],
+              "reasons": [
+                "Last Cancellation Date governs: LCD 2026-11-11T17:55:00+00:00 minus 2h buffer",
+                "Regional holiday: AT_RISK warning threshold lowered from 75% to 50% elapsed"
+              ],
+              "urgency_weight": 1.0
+            },
+            "booking": {
+              "id": 4,
+              "tboh_id": "TBOH-410551",
+              "hotel_name": "Hilton Paris Opera",
+              "supplier_name": "Hilton",
+              "supplier_email": "ops@hilton-paris.com",
+              "destination_city": "Paris",
+              "destination_country": "France",
+              "region": "EU",
+              "timezone": "Europe/Paris",
+              "check_in": "2026-11-13T17:01:00+00:00",
+              "check_out": "2026-11-16T17:01:00+00:00",
+              "lcd": "2026-11-11T17:55:00+00:00",
+              "booking_status": "CONFIRMED",
+              "amount": 2140.0,
+              "currency": "EUR",
+              "passenger_name": "Marc Lefevre",
+              "agency_id": 3,
+              "agency_name": "EuroWings B2B",
+              "agency_tier": "SILVER",
+              "display_timezone": "Europe/Paris",
+              "check_in_local": "13 Nov 2026 18:01 CET",
+              "lcd_local": "11 Nov 2026 18:55 CET",
+              "ticket_region": "EU"
+            }
+          },
+          "duration_ms": 9.51,
+          "error": null
+        },
+        {
+          "name": "TCK-402 handles an already-expired check-in deadline safely",
+          "expected": "CHECK_IN_DEADLINE with explicit expired flag",
+          "actual": "BREACHED governed by CHECK_IN_DEADLINE, expired_travel_deadline=True",
+          "passed": true,
+          "evidence": {
+            "sla": [
+              "Check-in governs: 2026-11-11T16:31:00+00:00 minus 4h buffer",
+              "A travel deadline (LCD/check-in buffer) is already in the past for this booking"
+            ]
+          },
+          "duration_ms": 9.83,
+          "error": null
+        },
+        {
+          "name": "Filter the queue to AT_RISK",
+          "expected": "Only AT_RISK tickets",
+          "actual": "6 AT_RISK tickets",
+          "passed": true,
+          "evidence": {
+            "tickets": [
+              "TCK-622",
+              "TCK-602",
+              "TCK-401",
+              "TCK-606",
+              "TCK-619",
+              "TCK-609"
+            ]
+          },
+          "duration_ms": 13.31,
+          "error": null
+        },
+        {
+          "name": "Escalate TCK-401 to an Escalation Manager",
+          "expected": "ESCALATED + queue ESCALATION_MANAGER + real owner",
+          "actual": "status=ESCALATED, queue=ESCALATION_MANAGER, owner=Elena Rossi",
+          "passed": true,
+          "evidence": {
+            "escalation": {
+              "ticket_id": 7,
+              "ticket_number": "TCK-401",
+              "status": "ESCALATED",
+              "queue": "ESCALATION_MANAGER",
+              "assigned_to": {
+                "id": 14,
+                "name": "Elena Rossi",
+                "role": "ESCALATION_MANAGER",
+                "region": "EU"
+              },
+              "previous": {
+                "owner_id": 9,
+                "status": "IN_PROGRESS",
+                "queue": "EU-TRIAGE"
+              },
+              "escalated_by": "Ananya Sharma",
+              "escalated_at": "2026-11-11T15:05:30.407211+00:00",
+              "reason": "LCD closes within the hour; guest hospitalised and supplier unresponsive.",
+              "escalation_id": 3
+            }
+          },
+          "duration_ms": 8.87,
+          "error": null
+        },
+        {
+          "name": "Switch to the Escalation Manager war room",
+          "expected": "New ownership visible in the EM queue",
+          "actual": "Elena Rossi sees 34 tickets; owns TCK-401: True",
+          "passed": true,
+          "evidence": {
+            "em_queue_counts": {
+              "escalated": 3,
+              "at_risk": 6,
+              "breached": 28,
+              "healthy": 10
+            },
+            "tickets": [
+              "TCK-404",
+              "TCK-403",
+              "TCK-401",
+              "TCK-101",
+              "TCK-104",
+              "TCK-109",
+              "TCK-205",
+              "TCK-514",
+              "TCK-600",
+              "TCK-612",
+              "TCK-624",
+              "TCK-625"
+            ]
+          },
+          "duration_ms": 28.04,
+          "error": null
+        },
+        {
+          "name": "Audit timeline records the handover",
+          "expected": "ESCALATED event + escalation record",
+          "actual": "events=['ESCALATED', 'TICKET_CREATED']; escalation records=1",
+          "passed": true,
+          "evidence": {
+            "activity": [
+              {
+                "id": 57,
+                "event_type": "ESCALATED",
+                "actor_name": "Ananya Sharma",
+                "description": "Escalated to Elena Rossi (Escalation Manager). Reason: LCD closes within the hour; guest hospitalised and supplier unresponsive.",
+                "metadata": {
+                  "assigned_em_id": 14,
+                  "assigned_em": "Elena Rossi",
+                  "escalated_by_id": 5,
+                  "previous_owner_id": 9,
+                  "previous_status": "IN_PROGRESS",
+                  "previous_queue": "EU-TRIAGE",
+                  "reason": "LCD closes within the hour; guest hospitalised and supplier unresponsive."
+                },
+                "created_at": "2026-11-11T15:05:30.407211+00:00"
+              },
+              {
+                "id": 7,
+                "event_type": "TICKET_CREATED",
+                "actor_name": "Seeded fixture",
+                "description": "Ticket created and classified as CANCELLATION_LCD_WAIVER (92%)",
+                "metadata": {
+                  "intent": "CANCELLATION_LCD_WAIVER",
+                  "confidence": 0.9222,
+                  "source": "ML",
+                  "seed": true
+                },
+                "created_at": "2026-11-11T12:01:00+00:00"
+              }
+            ],
+            "escalations": [
+              {
+                "id": 3,
+                "assigned_em": "Elena Rossi",
+                "assigned_em_id": 14,
+                "escalated_by": "Ananya Sharma",
+                "previous_owner_id": 9,
+                "previous_status": "IN_PROGRESS",
+                "previous_queue": "EU-TRIAGE",
+                "reason": "LCD closes within the hour; guest hospitalised and supplier unresponsive.",
+                "escalated_at": "2026-11-11T15:05:30.407211+00:00"
+              }
+            ]
+          },
+          "duration_ms": 13.07,
+          "error": null
+        }
+      ],
+      "steps_total": 8,
+      "steps_passed": 8,
+      "passed": true
+    },
+    {
+      "journey": "E",
+      "title": "Product intelligence and large export",
+      "started_at": "2026-11-11T15:05:30.456751+00:00",
+      "finished_at": "2026-11-11T15:05:31.672606+00:00",
+      "steps": [
+        {
+          "name": "Operations lead signs in",
+          "expected": "Token issued",
+          "actual": "None",
+          "passed": true,
+          "evidence": {},
+          "duration_ms": 43.87,
+          "error": null
+        },
+        {
+          "name": "Product intelligence aggregates recurring themes",
+          "expected": "Inventory-sync theme with >= 3 tickets",
+          "actual": "51 tickets in window; top intent REFUND_DELAY\u00d718; inventory-sync tickets=16",
+          "passed": true,
+          "evidence": {
+            "intent_distribution": [
+              {
+                "intent": "REFUND_DELAY",
+                "label": "Refund Delay",
+                "count": 18
+              },
+              {
+                "intent": "INVENTORY_RATE_SYNC_BUG",
+                "label": "Inventory & Rate Sync Bug",
+                "count": 16
+              },
+              {
+                "intent": "SPECIAL_REQUEST",
+                "label": "Special Request",
+                "count": 7
+              },
+              {
+                "intent": "VOUCHER_CONFIRMATION_ISSUE",
+                "label": "Voucher Confirmation Issue",
+                "count": 4
+              },
+              {
+                "intent": "AMENDMENT_NAME_DATE",
+                "label": "Amendment (Name / Date)",
+                "count": 2
+              },
+              {
+                "intent": "CANCELLATION_LCD_WAIVER",
+                "label": "Cancellation LCD Waiver",
+                "count": 2
+              },
+              {
+                "intent": "BILLING_INVOICE_DISPUTE",
+                "label": "Billing & Invoice Dispute",
+                "count": 1
+              },
+              {
+                "intent": "SUPPLIER_OVERBOOKING_RELOCATION",
+                "label": "Supplier Overbooking / Relocation",
+                "count": 1
+              }
+            ],
+            "supplier_complaints": [
+              {
+                "supplier": "Hotelbeds",
+                "tickets": 12
+              },
+              {
+                "supplier": "Hilton",
+                "tickets": 10
+              },
+              {
+                "supplier": "Agoda",
+                "tickets": 8
+              },
+              {
+                "supplier": "Accor",
+                "tickets": 8
+              },
+              {
+                "supplier": "WebBeds",
+                "tickets": 5
+              }
+            ],
+            "inventory_sync": {
+              "ticket_count": 16,
+              "suppliers": [
+                "Accor",
+                "Agoda",
+                "Hilton",
+                "Hotelbeds",
+                "Marriott",
+                "Rotana",
+                "WebBeds"
+              ],
+              "ticket_numbers": [
+                "TCK-505",
+                "TCK-503",
+                "TCK-502",
+                "TCK-501",
+                "TCK-404",
+                "TCK-504",
+                "TCK-606",
+                "TCK-616",
+                "TCK-601",
+                "TCK-611",
+                "TCK-621",
+                "TCK-600"
+              ]
+            },
+            "refund_bottleneck": {
+              "open_refunds": 13,
+              "avg_open_age_hours": 99.73,
+              "avg_resolved_hours": 37.29,
+              "oldest_open": {
+                "ticket_number": "TCK-625",
+                "title": "Refund not received \u2014 Atlantis The Palm stay",
+                "supplier": "Hotelbeds",
+                "age_hours": 0.0
+              }
+            }
+          },
+          "duration_ms": 9.74,
+          "error": null
+        },
+        {
+          "name": "Recurring supplier/API pattern produces a bug suggestion",
+          "expected": ">= 3 tickets sharing supplier + intent",
+          "actual": "5 suggestion(s); top: Accor INVENTORY_RATE_SYNC_BUG \u00d73",
+          "passed": true,
+          "evidence": {
+            "suggestions": [
+              {
+                "supplier": "Hotelbeds",
+                "intent": "REFUND_DELAY",
+                "intent_label": "Refund Delay",
+                "frequency": 7,
+                "ticket_ids": [
+                  1,
+                  2,
+                  3,
+                  24,
+                  33,
+                  37,
+                  50
+                ],
+                "ticket_numbers": [
+                  "TCK-101",
+                  "TCK-104",
+                  "TCK-109",
+                  "TCK-514",
+                  "TCK-608",
+                  "TCK-612",
+                  "TCK-625"
+                ],
+                "evidence": [
+                  "TCK-101: Refund not received for cancelled Atlantis stay (22 Oct 2026)",
+                  "TCK-104: Follow up on USD 1,450 refund (TBOH-778899) (30 Oct 2026)",
+                  "TCK-109: Refund credit note still not issued (04 Nov 2026)",
+                  "TCK-514: Refund escalation for Atlantis The Palm (10 Nov 2026)",
+                  "TCK-608: Refund delay on Hotelbeds booking (11 Nov 2026)"
+                ],
+                "period": {
+                  "from": "2026-10-22T15:01:00+00:00",
+                  "to": "2026-11-11T15:05:30.085774+00:00"
+                },
+                "window_days": 60,
+                "confidence": "HIGH",
+                "suggested_action": "Engineering: audit the Hotelbeds refund delay path. 7 tickets in the window share this supplier and intent \u2014 reproduce from the linked ticket ids, add a reconciliation assertion and an alert.",
+                "related_ticket_links": 115
+              },
+              {
+                "supplier": "Accor",
+                "intent": "INVENTORY_RATE_SYNC_BUG",
+                "intent_label": "Inventory & Rate Sync Bug",
+                "frequency": 3,
+                "ticket_ids": [
+                  12,
+                  11,
+                  30
+                ],
+                "ticket_numbers": [
+                  "TCK-502",
+                  "TCK-501",
+                  "TCK-605"
+                ],
+                "evidence": [
+                  "TCK-502: Rate mismatch on Hotelbeds API for Ibis Styles Bali (09 Nov 2026)",
+                  "TCK-501: Rate mismatch on Hotelbeds API for Ibis Styles Bali (10 Nov 2026)",
+                  "TCK-605: Rate mismatch on Accor API for Novotel Bangkok Sukhumvit (11 Nov 2026)"
+                ],
+                "period": {
+                  "from": "2026-11-09T09:01:00+00:00",
+                  "to": "2026-11-11T13:49:00+00:00"
+                },
+                "window_days": 60,
+                "confidence": "MEDIUM",
+                "suggested_action": "Engineering: audit the Accor inventory & rate sync bug path. 3 tickets in the window share this supplier and intent \u2014 reproduce from the linked ticket ids, add a reconciliation assertion and an alert.",
+                "related_ticket_links": 19
+              },
+              {
+                "supplier": "Agoda",
+                "intent": "VOUCHER_CONFIRMATION_ISSUE",
+                "intent_label": "Voucher Confirmation Issue",
+                "frequency": 3,
+                "ticket_ids": [
+                  4,
+                  8,
+                  51
+                ],
+                "ticket_numbers": [
+                  "TCK-201",
+                  "TCK-402",
+                  "TCK-626"
+                ],
+                "evidence": [
+                  "TCK-201: Voucher confirmation required before arrival (10 Nov 2026)",
+                  "TCK-402: Guest check-in in 90 minutes \u2014 no confirmation (11 Nov 2026)",
+                  "TCK-626: Voucher confirmation required before arrival (TBOH-554411) (11 Nov 2026)"
+                ],
+                "period": {
+                  "from": "2026-11-10T21:01:00+00:00",
+                  "to": "2026-11-11T15:05:30.180116+00:00"
+                },
+                "window_days": 60,
+                "confidence": "MEDIUM",
+                "suggested_action": "Engineering: audit the Agoda voucher confirmation issue path. 3 tickets in the window share this supplier and intent \u2014 reproduce from the linked ticket ids, add a reconciliation assertion and an alert.",
+                "related_ticket_links": 13
+              },
+              {
+                "supplier": "Hilton",
+                "intent": "REFUND_DELAY",
+                "intent_label": "Refund Delay",
+                "frequency": 3,
+                "ticket_ids": [
+                  28,
+                  48,
+                  27
+                ],
+                "ticket_numbers": [
+                  "TCK-603",
+                  "TCK-623",
+                  "TCK-602"
+                ],
+                "evidence": [
+                  "TCK-603: Refund delay on Hilton booking (11 Nov 2026)",
+                  "TCK-623: Refund delay on Hilton booking (11 Nov 2026)",
+                  "TCK-602: Refund not received for cancelled Hilton Paris Opera stay (11 Nov 2026)"
+                ],
+                "period": {
+                  "from": "2026-11-11T08:07:00+00:00",
+                  "to": "2026-11-11T11:32:12+00:00"
+                },
+                "window_days": 60,
+                "confidence": "MEDIUM",
+                "suggested_action": "Engineering: audit the Hilton refund delay path. 3 tickets in the window share this supplier and intent \u2014 reproduce from the linked ticket ids, add a reconciliation assertion and an alert.",
+                "related_ticket_links": 16
+              }
+            ],
+            "method": "group tickets by (supplier, intent) and require frequency >= threshold",
+            "note": "These are local product-bug proposals stored in this database. No Jira or external tracker is connected or claimed."
+          },
+          "duration_ms": 10.36,
+          "error": null
+        },
+        {
+          "name": "Create a local product bug record",
+          "expected": "PROD-BUG-1xx created",
+          "actual": "Created PROD-BUG-101 (PROPOSED)",
+          "passed": true,
+          "evidence": {
+            "bug": {
+              "bug_code": "PROD-BUG-101",
+              "title": "Hotelbeds Refund Delay pattern",
+              "supplier": "Hotelbeds",
+              "intent": "REFUND_DELAY",
+              "intent_label": "Refund Delay",
+              "frequency": 7,
+              "status": "PROPOSED",
+              "suggested_action": "Engineering: audit the Hotelbeds refund delay path. 7 tickets in the window share this supplier and intent \u2014 reproduce from the linked ticket ids, add a reconciliation assertion and an alert.",
+              "supporting_evidence": "TCK-101: Refund not received for cancelled Atlantis stay; TCK-104: Follow up on USD 1,450 refund (TBOH-778899); TCK-109: Refund credit note still not issued; TCK-514: Refund escalation for Atlantis The Palm; TCK-608: Refund delay on Hotelbeds booking; TCK-612: Refund not received for cancelled Atlantis The Palm stay; TCK-625: Refund not received \u2014 Atlantis The Palm stay",
+              "related_ticket_ids": [
+                1,
+                2,
+                3,
+                24,
+                33,
+                37,
+                50
+              ],
+              "window_start": "2026-09-12T15:05:30.524584+00:00",
+              "window_end": "2026-11-11T15:05:30.524590+00:00",
+              "created_at": "2026-11-11T15:05:30.524591+00:00"
+            }
+          },
+          "duration_ms": 7.67,
+          "error": null
+        },
+        {
+          "name": "Stream a 50,000-row CSV export",
+          "expected": "Exactly 50,000 data rows",
+          "actual": "50000 data rows, 25 columns, 16.31 MB streamed",
+          "passed": true,
+          "evidence": {
+            "job_uuid": "6b7a3526-2e89-468e-ad1e-70e8eab42c36",
+            "rows": 50000,
+            "columns": 25,
+            "bytes": 17105732
+          },
+          "duration_ms": 923.87,
+          "error": null
+        },
+        {
+          "name": "Validate the generated artifact on disk",
+          "expected": "Row count matches and file is readable",
+          "actual": "50000 rows in file, 25 columns, 16.31 MB, PASS",
+          "passed": true,
+          "evidence": {
+            "validation": {
+              "job_uuid": "6b7a3526-2e89-468e-ad1e-70e8eab42c36",
+              "result": "PASS",
+              "expected_rows": 50000,
+              "actual_rows_in_file": 50000,
+              "row_count_matches": true,
+              "column_count": 25,
+              "file_size_bytes": 17105732,
+              "file_format": "CSV",
+              "readable": true,
+              "duration_ms": 903.9,
+              "throughput_rows_per_sec": 55315.85,
+              "peak_memory_mb": 33.281,
+              "note": "Row count and column count are re-read from the file on disk, independent of the numbers reported while streaming."
+            }
+          },
+          "duration_ms": 214.77,
+          "error": null
+        },
+        {
+          "name": "Export job metrics are measured, not hardcoded",
+          "expected": "COMPLETED with measured throughput",
+          "actual": "50000 rows in 903.9 ms (55315.85 rows/s, peak 33.281 MB)",
+          "passed": true,
+          "evidence": {
+            "job": {
+              "job_id": 1,
+              "job_uuid": "6b7a3526-2e89-468e-ad1e-70e8eab42c36",
+              "format": "CSV",
+              "status": "COMPLETED",
+              "data_source": "SYNTHETIC_BENCHMARK",
+              "requested_by": "nisha.verma@tbo.com",
+              "total_rows": 50000,
+              "rows_streamed": 50000,
+              "duration_ms": 903.9,
+              "file_size_bytes": 17105732,
+              "file_size_mb": 16.313,
+              "throughput_rows_per_sec": 55315.85,
+              "peak_memory_mb": 33.281,
+              "filters": {
+                "agency_id": null,
+                "region": null,
+                "status": null,
+                "intent": null,
+                "priority": null,
+                "date_from": null,
+                "date_to": null
+              },
+              "error_message": null,
+              "created_at": "2026-11-11T15:05:30.531363+00:00",
+              "completed_at": "2026-11-11T15:05:31.439093+00:00",
+              "progress_pct": 100.0,
+              "file_path": "/home/user/OpsDesk/exports/opsdesk_export_6b7a3526-2e89-468e-ad1e-70e8eab42c36.csv",
+              "download_url": "/api/exports/6b7a3526-2e89-468e-ad1e-70e8eab42c36/download"
+            }
+          },
+          "duration_ms": 5.53,
+          "error": null
+        }
+      ],
+      "steps_total": 7,
+      "steps_passed": 7,
+      "passed": true,
+      "artifacts": {
+        "job_uuid": "6b7a3526-2e89-468e-ad1e-70e8eab42c36",
+        "bug_code": "PROD-BUG-101"
+      }
+    }
+  ],
+  "source": "Workspace 6 simulation lab",
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "steps_total": 34,
+    "steps_passed": 34
+  }
+}

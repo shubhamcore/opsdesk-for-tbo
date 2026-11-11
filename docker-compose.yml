@@ -1,0 +1,41 @@
+# OpsDesk for TBO — local production-shaped stack.
+#
+#   docker compose up --build            # SQLite (default)
+#   docker compose --profile postgres up # Postgres instead of SQLite
+#
+# The Postgres profile is a *configuration* path, not a tested deployment: the
+# DDL is portable and the URL is swapped, but the Postgres migration test is
+# listed as NOT RUN in documentation/Testing_Report.md.
+services:
+  opsdesk:
+    build: .
+    image: opsdesk-tbo:2.1.0
+    ports:
+      - "8000:8000"
+    environment:
+      OPSDESK_ENV: production
+      OPSDESK_SECRET_KEY: ${OPSDESK_SECRET_KEY:?set a real secret in .env}
+      OPSDESK_DEMO_PASSWORD: ${OPSDESK_DEMO_PASSWORD:-OpsDesk#2026}
+      OPSDESK_RATE_LIMIT_PER_MINUTE: ${OPSDESK_RATE_LIMIT_PER_MINUTE:-60}
+      OPSDESK_DATABASE_URL: ${OPSDESK_DATABASE_URL:-sqlite:////data/opsdesk.db}
+    volumes:
+      - opsdesk-data:/data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_USER: opsdesk
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: opsdesk
+    volumes:
+      - opsdesk-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opsdesk"]
+      interval: 10s
+      retries: 5
+
+volumes:
+  opsdesk-data:
+  opsdesk-pg:

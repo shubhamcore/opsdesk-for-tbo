@@ -1,0 +1,90 @@
+{
+  "generated_at": "2026-11-09T19:17:15.932042Z",
+  "decks": [
+    {
+      "pptx": "/home/user/OpsDesk/presentations/Executive_Pitch_Deck.pptx",
+      "pdf": "/home/user/OpsDesk/presentations/Executive_Pitch_Deck.pdf",
+      "slides": 12,
+      "pptx_bytes": 1079077,
+      "pdf_bytes": 1216506
+    },
+    {
+      "pptx": "/home/user/OpsDesk/presentations/Technical_Architecture_Deck.pptx",
+      "pdf": "/home/user/OpsDesk/presentations/Technical_Architecture_Deck.pdf",
+      "slides": 15,
+      "pptx_bytes": 789224,
+      "pdf_bytes": 847373
+    }
+  ],
+  "facts": {
+    "accuracy": 0.8958,
+    "macro_f1": 0.8964,
+    "train_rows": 576,
+    "holdout_rows": 288,
+    "per_class": {
+      "REFUND_DELAY": {
+        "precision": 0.9677,
+        "recall": 0.8333,
+        "f1": 0.8955,
+        "support": 36
+      },
+      "CANCELLATION_LCD_WAIVER": {
+        "precision": 0.9231,
+        "recall": 1.0,
+        "f1": 0.96,
+        "support": 36
+      },
+      "VOUCHER_CONFIRMATION_ISSUE": {
+        "precision": 0.8889,
+        "recall": 0.8889,
+        "f1": 0.8889,
+        "support": 36
+      },
+      "AMENDMENT_NAME_DATE": {
+        "precision": 0.9211,
+        "recall": 0.9722,
+        "f1": 0.9459,
+        "support": 36
+      },
+      "INVENTORY_RATE_SYNC_BUG": {
+        "precision": 1.0,
+        "recall": 0.8333,
+        "f1": 0.9091,
+        "support": 36
+      },
+      "SPECIAL_REQUEST": {
+        "precision": 0.7805,
+        "recall": 0.8889,
+        "f1": 0.8312,
+        "support": 36
+      },
+      "SUPPLIER_OVERBOOKING_RELOCATION": {
+        "precision": 0.8,
+        "recall": 0.8889,
+        "f1": 0.8421,
+        "support": 36
+      },
+      "BILLING_INVOICE_DISPUTE": {
+        "precision": 0.9394,
+        "recall": 0.8611,
+        "f1": 0.8986,
+        "support": 36
+      }
+    },
+    "export_rows": 50000,
+    "export_columns": 25,
+    "export_mb": 16.313,
+    "export_ms": 1289.12,
+    "export_rps": 38786.15,
+    "export_peak_mb": 8.848,
+    "routing_median_ms": 3.92,
+    "routing_p95_ms": 4.49,
+    "journeys_passed": 5,
+    "journeys_total": 5,
+    "steps_total": 34,
+    "steps_passed": 34,
+    "tickets": 49,
+    "bookings": 12,
+    "users": 16
+  }
+}

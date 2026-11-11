@@ -1,0 +1,55 @@
+1
+00:00:01,836 --> 00:00:12,118
+The ops queue: active, at-risk and breached counts come straight from the SLA engine.
+
+2
+00:00:16,524 --> 00:00:26,806
+Filters run server-side; each row shows its governing rule and a live countdown.
+
+3
+00:00:39,336 --> 00:00:53,986
+The case workspace: booking context, classified intent, case brief and main thread.
+
+4
+00:00:55,032 --> 00:01:09,682
+Side conversations keep their own explicit recipients, independent of the main thread.
+
+5
+00:01:14,390 --> 00:01:28,840
+A transfer moves queue and owner only, then verifies the recipients are unchanged.
+
+6
+00:01:30,672 --> 00:01:39,811
+Routing: hard filters first, then the 35 / 25 / 25 / 15 score with every term visible.
+
+7
+00:01:43,728 --> 00:01:52,867
+Run the assignment and the decision is written to the immutable routing audit.
+
+8
+00:02:02,708 --> 00:02:08,465
+The escalation war room: real ownership handover, holiday-adjusted deadlines.
+
+9
+00:02:12,988 --> 00:02:18,745
+Countdowns tick against the stored effective due date, not a static flag.
+
+10
+00:02:23,560 --> 00:02:30,952
+Product intelligence: intents, suppliers, refund bottlenecks and regional performance.
+
+11
+00:02:31,744 --> 00:02:39,136
+Recurring supplier plus intent patterns become bug proposals with evidence.
+
+12
+00:02:37,552 --> 00:02:44,944
+A 50,000-row export streams from a server iterator and is validated from disk.
+
+13
+00:02:50,580 --> 00:03:01,444
+The simulation lab runs the five seeded journeys against the live API.
+
+14
+00:03:06,100 --> 00:03:16,964
+Every step shows the actual response next to the expectation.

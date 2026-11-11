@@ -1,0 +1,154 @@
+{
+  "generated_at": "2026-11-09T18:27:46Z",
+  "model_path": "ai_models/saved_models/intent_pipeline.joblib",
+  "dataset": "SYNTHETIC (template-generated; no real TBO ticket text was used)",
+  "train_samples": 576,
+  "holdout_samples": 288,
+  "holdout_accuracy": 0.8958,
+  "holdout_macro_f1": 0.8964,
+  "split": "template-disjoint: every holdout template is unseen during training",
+  "per_class": {
+    "REFUND_DELAY": {
+      "precision": 0.9677,
+      "recall": 0.8333,
+      "f1": 0.8955,
+      "support": 36
+    },
+    "CANCELLATION_LCD_WAIVER": {
+      "precision": 0.9231,
+      "recall": 1.0,
+      "f1": 0.96,
+      "support": 36
+    },
+    "VOUCHER_CONFIRMATION_ISSUE": {
+      "precision": 0.8889,
+      "recall": 0.8889,
+      "f1": 0.8889,
+      "support": 36
+    },
+    "AMENDMENT_NAME_DATE": {
+      "precision": 0.9211,
+      "recall": 0.9722,
+      "f1": 0.9459,
+      "support": 36
+    },
+    "INVENTORY_RATE_SYNC_BUG": {
+      "precision": 1.0,
+      "recall": 0.8333,
+      "f1": 0.9091,
+      "support": 36
+    },
+    "SPECIAL_REQUEST": {
+      "precision": 0.7805,
+      "recall": 0.8889,
+      "f1": 0.8312,
+      "support": 36
+    },
+    "SUPPLIER_OVERBOOKING_RELOCATION": {
+      "precision": 0.8,
+      "recall": 0.8889,
+      "f1": 0.8421,
+      "support": 36
+    },
+    "BILLING_INVOICE_DISPUTE": {
+      "precision": 0.9394,
+      "recall": 0.8611,
+      "f1": 0.8986,
+      "support": 36
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "REFUND_DELAY",
+      "CANCELLATION_LCD_WAIVER",
+      "VOUCHER_CONFIRMATION_ISSUE",
+      "AMENDMENT_NAME_DATE",
+      "INVENTORY_RATE_SYNC_BUG",
+      "SPECIAL_REQUEST",
+      "SUPPLIER_OVERBOOKING_RELOCATION",
+      "BILLING_INVOICE_DISPUTE"
+    ],
+    "matrix": [
+      [
+        30,
+        3,
+        0,
+        0,
+        0,
+        1,
+        0,
+        2
+      ],
+      [
+        0,
+        36,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        32,
+        3,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        35,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        30,
+        4,
+        2,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        32,
+        4,
+        0
+      ],
+      [
+        0,
+        0,
+        4,
+        0,
+        0,
+        0,
+        32,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        4,
+        0,
+        31
+      ]
+    ]
+  }
+}

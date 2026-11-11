@@ -1,0 +1,275 @@
+{
+  "generated_at": "2026-11-09T19:15:30.750857+00:00",
+  "base_url": "http://127.0.0.1:8000",
+  "environment": {
+    "python": "3.13.16",
+    "platform": "Linux-6.1.189+-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "processor_count": 2
+  },
+  "sections": {
+    "api_latency": [
+      {
+        "operation": "GET /api/tickets (queue list)",
+        "samples": 7,
+        "min_ms": 15.49,
+        "median_ms": 16.58,
+        "p95_ms": 17.45,
+        "max_ms": 17.45,
+        "mean_ms": 16.54
+      },
+      {
+        "operation": "GET /api/analytics/queue",
+        "samples": 7,
+        "min_ms": 17.58,
+        "median_ms": 18.1,
+        "p95_ms": 18.59,
+        "max_ms": 18.59,
+        "mean_ms": 18.1
+      },
+      {
+        "operation": "GET /api/analytics/product-intelligence",
+        "samples": 7,
+        "min_ms": 9.01,
+        "median_ms": 9.27,
+        "p95_ms": 9.6,
+        "max_ms": 9.6,
+        "mean_ms": 9.29
+      },
+      {
+        "operation": "GET /api/analytics/bug-suggestions",
+        "samples": 7,
+        "min_ms": 8.92,
+        "median_ms": 9.1,
+        "p95_ms": 10.1,
+        "max_ms": 10.1,
+        "mean_ms": 9.32
+      },
+      {
+        "operation": "GET /api/routing/board",
+        "samples": 7,
+        "min_ms": 3.16,
+        "median_ms": 3.21,
+        "p95_ms": 4.03,
+        "max_ms": 4.03,
+        "mean_ms": 3.39
+      },
+      {
+        "operation": "GET /api/escalations/queue",
+        "samples": 7,
+        "min_ms": 16.74,
+        "median_ms": 17.03,
+        "p95_ms": 17.39,
+        "max_ms": 17.39,
+        "mean_ms": 17.06
+      }
+    ],
+    "routing_comparator": {
+      "operation": "GET /api/routing/tickets/{id}/comparator",
+      "samples": 12,
+      "min_ms": 3.56,
+      "median_ms": 3.92,
+      "p95_ms": 4.49,
+      "max_ms": 5.79,
+      "mean_ms": 4.08,
+      "candidates_scored": 36,
+      "candidates_per_call": 3.0
+    },
+    "extraction_stage_a": {
+      "operation": "GET /api/extract",
+      "samples": 40,
+      "min_ms": 1.96,
+      "median_ms": 2.35,
+      "p95_ms": 2.61,
+      "max_ms": 2.66,
+      "mean_ms": 2.31
+    },
+    "export_stream": {
+      "rows_requested": 50000,
+      "rows_received_incl_header": 50001,
+      "columns": 25,
+      "client_elapsed_ms": 1297.72,
+      "client_rows_per_sec": 38529.93,
+      "server_duration_ms": 1289.12,
+      "server_rows_per_sec": 38786.15,
+      "file_size_mb": 16.313,
+      "peak_memory_mb": 8.848,
+      "job_uuid": "c6bc62d8-5cdd-493e-bec1-00a9e23cb0e3"
+    },
+    "export_validation": {
+      "job_uuid": "c6bc62d8-5cdd-493e-bec1-00a9e23cb0e3",
+      "result": "PASS",
+      "expected_rows": 50000,
+      "actual_rows_in_file": 50000,
+      "row_count_matches": true,
+      "column_count": 25,
+      "file_size_bytes": 17105732,
+      "file_format": "CSV",
+      "readable": true,
+      "duration_ms": 1289.12,
+      "throughput_rows_per_sec": 38786.15,
+      "peak_memory_mb": 8.848,
+      "note": "Row count and column count are re-read from the file on disk, independent of the numbers reported while streaming."
+    },
+    "classifier_evaluation": {
+      "generated_at": "2026-11-09T18:27:46Z",
+      "model_path": "ai_models/saved_models/intent_pipeline.joblib",
+      "dataset": "SYNTHETIC (template-generated; no real TBO ticket text was used)",
+      "train_samples": 576,
+      "holdout_samples": 288,
+      "holdout_accuracy": 0.8958,
+      "holdout_macro_f1": 0.8964,
+      "split": "template-disjoint: every holdout template is unseen during training",
+      "per_class": {
+        "REFUND_DELAY": {
+          "precision": 0.9677,
+          "recall": 0.8333,
+          "f1": 0.8955,
+          "support": 36
+        },
+        "CANCELLATION_LCD_WAIVER": {
+          "precision": 0.9231,
+          "recall": 1.0,
+          "f1": 0.96,
+          "support": 36
+        },
+        "VOUCHER_CONFIRMATION_ISSUE": {
+          "precision": 0.8889,
+          "recall": 0.8889,
+          "f1": 0.8889,
+          "support": 36
+        },
+        "AMENDMENT_NAME_DATE": {
+          "precision": 0.9211,
+          "recall": 0.9722,
+          "f1": 0.9459,
+          "support": 36
+        },
+        "INVENTORY_RATE_SYNC_BUG": {
+          "precision": 1.0,
+          "recall": 0.8333,
+          "f1": 0.9091,
+          "support": 36
+        },
+        "SPECIAL_REQUEST": {
+          "precision": 0.7805,
+          "recall": 0.8889,
+          "f1": 0.8312,
+          "support": 36
+        },
+        "SUPPLIER_OVERBOOKING_RELOCATION": {
+          "precision": 0.8,
+          "recall": 0.8889,
+          "f1": 0.8421,
+          "support": 36
+        },
+        "BILLING_INVOICE_DISPUTE": {
+          "precision": 0.9394,
+          "recall": 0.8611,
+          "f1": 0.8986,
+          "support": 36
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "REFUND_DELAY",
+          "CANCELLATION_LCD_WAIVER",
+          "VOUCHER_CONFIRMATION_ISSUE",
+          "AMENDMENT_NAME_DATE",
+          "INVENTORY_RATE_SYNC_BUG",
+          "SPECIAL_REQUEST",
+          "SUPPLIER_OVERBOOKING_RELOCATION",
+          "BILLING_INVOICE_DISPUTE"
+        ],
+        "matrix": [
+          [
+            30,
+            3,
+            0,
+            0,
+            0,
+            1,
+            0,
+            2
+          ],
+          [
+            0,
+            36,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            32,
+            3,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            35,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            30,
+            4,
+            2,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            32,
+            4,
+            0
+          ],
+          [
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            32,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            31
+          ]
+        ]
+      }
+    }
+  },
+  "dataset": {
+    "tickets": 49,
+    "bookings": 12,
+    "users": 16
+  },
+  "classifier_mode": "ML"
+}
